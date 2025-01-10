@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BookToSell;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
-class BookToSellController extends Controller
+class TesttController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,21 +13,7 @@ class BookToSellController extends Controller
      */
     public function index()
     {
-        $BookToSell=BookToSell::all();
-        return response()->json($BookToSell);
-    }
-
-    public function show($id)
-    {
-        // Fetch the author by ID
-        $BookToSell = BookToSell::find($id);
-
-        // Check if the author exists
-        if ($BookToSell) {
-            return response()->json($BookToSell);
-        } else {
-            return response()->json(['message' => 'BookToSell not found'], 404);
-        }
+        //
     }
 
     /**
@@ -53,6 +37,16 @@ class BookToSellController extends Controller
         //
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,5 +82,3 @@ class BookToSellController extends Controller
         //
     }
 }
-
-

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class CartController extends Controller
 {
@@ -13,7 +15,21 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $Cart=Cart::all();
+        return response()->json($Cart);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $Cart = Cart::find($id);
+
+        // Check if the author exists
+        if ($Cart) {
+            return response()->json($Cart);
+        } else {
+            return response()->json(['message' => 'Cart not found'], 404);
+        }
     }
 
     /**
@@ -37,16 +53,7 @@ class CartController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WishList;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class WishListController extends Controller
 {
@@ -13,7 +15,21 @@ class WishListController extends Controller
      */
     public function index()
     {
-        //
+        $WishList=WishList::all();
+        return response()->json($WishList);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $WishList = WishList::find($id);
+
+        // Check if the author exists
+        if ($WishList) {
+            return response()->json($WishList);
+        } else {
+            return response()->json(['message' => 'WishList not found'], 404);
+        }
     }
 
     /**
@@ -37,16 +53,6 @@ class WishListController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use App\Models\TrackActiveRentalBook;
 
 class TrackActiveRentalBookController extends Controller
 {
@@ -13,7 +15,21 @@ class TrackActiveRentalBookController extends Controller
      */
     public function index()
     {
-        //
+        $TrackActiveRentalBook=TrackActiveRentalBook::all();
+        return response()->json($TrackActiveRentalBook);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $TrackActiveRentalBook = TrackActiveRentalBook::find($id);
+
+        // Check if the author exists
+        if ($TrackActiveRentalBook) {
+            return response()->json($TrackActiveRentalBook);
+        } else {
+            return response()->json(['message' => 'TrackActiveRentalBook not found'], 404);
+        }
     }
 
     /**
@@ -37,16 +53,6 @@ class TrackActiveRentalBookController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

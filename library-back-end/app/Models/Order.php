@@ -26,5 +26,11 @@ class Order extends Model
     {
         return $this->hasMany(TrackActiveRentalBook::class);
     }
+    public function books()
+    {
+        return $this->belongsToMany(BookToSell::class, 'order_book')
+                    ->withTimestamps();
+    }
+
 }
 

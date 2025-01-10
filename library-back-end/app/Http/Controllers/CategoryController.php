@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class CategoryController extends Controller
 {
@@ -13,7 +15,21 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $Category=Category::all();
+        return response()->json($Category);
+    }
+    
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $Category = Category::find($id);
+
+        // Check if the author exists
+        if ($Category) {
+            return response()->json($Category);
+        } else {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
     }
 
     /**
@@ -37,16 +53,6 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

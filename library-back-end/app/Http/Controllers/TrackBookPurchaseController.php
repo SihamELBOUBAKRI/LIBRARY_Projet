@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\TrackBookPurchase;
+use Illuminate\Routing\Controller;
 
 class TrackBookPurchaseController extends Controller
 {
@@ -13,7 +15,21 @@ class TrackBookPurchaseController extends Controller
      */
     public function index()
     {
-        //
+        $TrackBookPurchase=TrackBookPurchase::all();
+        return response()->json($TrackBookPurchase);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $TrackBookPurchase = TrackBookPurchase::find($id);
+
+        // Check if the author exists
+        if ($TrackBookPurchase) {
+            return response()->json($TrackBookPurchase);
+        } else {
+            return response()->json(['message' => 'TrackBookPurchase not found'], 404);
+        }
     }
 
     /**
@@ -37,17 +53,7 @@ class TrackBookPurchaseController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      *

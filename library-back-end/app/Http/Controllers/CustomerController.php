@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class CustomerController extends Controller
 {
@@ -13,7 +15,21 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $Customer=Customer::all();
+        return response()->json($Customer);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $Customer = Customer::find($id);
+
+        // Check if the author exists
+        if ($Customer) {
+            return response()->json($Customer);
+        } else {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
     }
 
     /**
@@ -33,17 +49,6 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
     {
         //
     }

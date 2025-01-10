@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookToRent;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class BookToRentController extends Controller
 {
@@ -13,7 +15,21 @@ class BookToRentController extends Controller
      */
     public function index()
     {
-        //
+        $BookToRent=BookToRent::all();
+        return response()->json($BookToRent);
+    }
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $BookToRent = BookToRent::find($id);
+
+        // Check if the author exists
+        if ($BookToRent) {
+            return response()->json($BookToRent);
+        } else {
+            return response()->json(['message' => 'BookToRent not found'], 404);
+        }
     }
 
     /**
@@ -33,17 +49,6 @@ class BookToRentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
     {
         //
     }

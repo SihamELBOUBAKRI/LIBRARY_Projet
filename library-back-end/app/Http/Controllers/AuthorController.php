@@ -20,6 +20,25 @@ class AuthorController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $author = Author::find($id);
+
+        // Check if the author exists
+        if ($author) {
+            return response()->json($author);
+        } else {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -40,16 +59,8 @@ class AuthorController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
+
 
     /**
      * Show the form for editing the specified resource.

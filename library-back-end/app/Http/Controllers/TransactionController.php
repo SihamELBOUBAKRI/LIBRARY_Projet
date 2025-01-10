@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class TransactoionController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +15,24 @@ class TransactoionController extends Controller
      */
     public function index()
     {
-        //
+        $Transaction=Transaction::all();
+        return response()->json($Transaction);
     }
+
+
+    public function show($id)
+    {
+        // Fetch the author by ID
+        $Transaction = Transaction::find($id);
+
+        // Check if the author exists
+        if ($Transaction) {
+            return response()->json($Transaction);
+        } else {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,16 +55,7 @@ class TransactoionController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
