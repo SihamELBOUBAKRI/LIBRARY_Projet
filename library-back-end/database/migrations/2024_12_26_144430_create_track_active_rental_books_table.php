@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('track_active_rental_books', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->foreignId('book_id')->constrained('books_to_rent')->onDelete('cascade');
+            $table->foreignId('book_id')->constrained('book_to_rents')->onDelete('cascade');
             $table->date('start_date');
             $table->date('due_date');
             $table->date('return_date')->nullable();

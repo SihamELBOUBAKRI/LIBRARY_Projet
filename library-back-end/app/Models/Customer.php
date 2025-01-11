@@ -10,8 +10,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone_number', 'address', 'membership_start_date', 'membership_end_date'];
-
+    protected $fillable = ['name', 'email', 'phone_number', 'address'];
     public function cart()
     {
         return $this->hasOne(Cart::class);
@@ -26,5 +25,11 @@ class Customer extends Model
     {
         return $this->hasOne(Wishlist::class);
     }
+
+    public function member()
+    {
+        return $this->hasOne(Member::class);
+    }
+
 }
 

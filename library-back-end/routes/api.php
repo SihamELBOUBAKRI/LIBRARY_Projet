@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\WishListController;
@@ -46,6 +47,7 @@ Route::get('/categories/{id}', [CategoryController::class, 'show']);
 //customers
 Route::get('/customers', [CustomerController::class,'index']);
 Route::get('/customers/{id}', [CustomerController::class, 'show']);
+Route::post('/customers', [CustomerController::class, 'store']);
 
 //orders
 Route::get('/orders', [OrderController::class,'index']);
@@ -67,3 +69,8 @@ Route::get('/activeRentalBooks/{id}', [TrackActiveRentalBookController::class, '
 //purchases-books
 Route::get('/purchasesBooks', [TrackBookPurchaseController::class,'index']);
 Route::get('/purchasesBooks/{id}', [TrackBookPurchaseController::class, 'show']);
+
+//members
+Route::get('/members', [MemberController::class,'index']);
+Route::get('/members/{id}', [MemberController::class, 'show']);
+Route::post('/members', [MemberController::class, 'store']);

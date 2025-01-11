@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class CustomerController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,22 +16,23 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $Customer=Customer::all();
-        return response()->json($Customer);
+        $member=Member::all();
+        return response()->json($member);
     }
 
     public function show($id)
     {
         // Fetch the author by ID
-        $Customer = Customer::find($id);
+        $member = Member::find($id);
 
         // Check if the author exists
-        if ($Customer) {
-            return response()->json($Customer);
+        if ($member) {
+            return response()->json($member);
         } else {
-            return response()->json(['message' => 'Customer not found'], 404);
+            return response()->json(['message' => 'member not found'], 404);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,19 +53,39 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email',
-            'phone_number' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
+            'customer_id' => 'required|exists:customers,id', // Ensure the customer exists
+            'cin' => 'required|string|unique:members,cin',
+            'gender' => 'nullable|in:male,female',
+            'birthday' => 'nullable|date',
         ]);
-
-        $customer = Customer::create($validated);
-
+    
+        // Find the customer by their ID
+        $customer = Customer::find($validated['customer_id']);
+    
+        // Update the is_member flag to true
+        $customer->is_member = true;
+        $customer->save(); // Save the updated customer record
+    
+        // Create the member for the customer
+        $member = Member::create([
+            'customer_id' => $customer->id,
+            'cin' => $validated['cin'],
+            'gender' => $validated['gender'],
+            'birthday' => $validated['birthday'],
+            'membership_start_date' => now(), // Set membership_start_date to current date
+            'membership_end_date' => null,
+        ]);
+    
         return response()->json([
-            'message' => 'Customer created successfully!',
+            'message' => 'Member created successfully!',
             'customer' => $customer,
-        ], 201);
+            'member' => $member,
+        ], 200); // You can return 200 OK since the member is being created, not a new resource creation
     }
+    
+
+
+   
 
     /**
      * Show the form for editing the specified resource.
@@ -99,4 +121,3 @@ class CustomerController extends Controller
         //
     }
 }
-
