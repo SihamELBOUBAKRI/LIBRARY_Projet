@@ -12,8 +12,15 @@ class Wishlist extends Model
 
     protected $fillable = ['customer_id', 'book_id'];
 
+    
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
+
+        public function items()
+    {
+        return $this->hasMany(WishListItem::class);
+    }
+
 }

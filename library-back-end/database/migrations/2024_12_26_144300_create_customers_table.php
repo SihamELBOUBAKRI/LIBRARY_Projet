@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->text('address')->nullable();
             $table->boolean('is_member')->default(false);
+            $table->foreignId('wish_list_id')->nullable()->constrained('wish_lists')->onDelete('cascade');
             $table->timestamps();
         });
     }

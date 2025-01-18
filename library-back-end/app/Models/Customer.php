@@ -11,25 +11,31 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'email', 'phone_number', 'address'];
-    public function cart()
-    {
-        return $this->hasOne(Cart::class);
-    }
+    
 
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
-    public function wishlist()
+
+    public function cart()
     {
-        return $this->hasOne(Wishlist::class);
+        return $this->belongsTo(Cart::class);
     }
+    
+    public function wishList()
+    {
+        return $this->hasOne(WishList::class);
+    }
+    
+
 
     public function member()
     {
         return $this->hasOne(Member::class);
     }
+    
 
 }
 

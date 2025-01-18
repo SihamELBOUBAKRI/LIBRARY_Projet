@@ -26,5 +26,10 @@ class BookToSell extends Model
         return $this->belongsToMany(Order::class, 'order_book')
                     ->withTimestamps();
     }
+    public function wishListItems()
+    {
+        return $this->hasMany(WishListItem::class);
+    }
+
 
 }

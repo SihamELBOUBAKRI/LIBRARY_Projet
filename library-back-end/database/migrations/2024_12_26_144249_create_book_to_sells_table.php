@@ -13,20 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('book_to_rents', function (Blueprint $table) {
+        Schema::create('book_to_sells', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->decimal('rental_price_per_day', 10, 2);
-            $table->integer('available_quantity');
-            $table->string('cover_image')->nullable(); // New column for cover image
+            $table->binary('cover_image')->nullable(); 
+            $table->decimal('price', 10, 2);
+            $table->integer('stock_quantity');
             $table->foreignId('author_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
-
-
     /**
      * Reverse the migrations.
      *
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_to_rents');
+        Schema::dropIfExists('book_to_sells');
     }
 };

@@ -14,17 +14,25 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Author One', 'biography' => 'Biography of Author One', 'date_of_birth' => '1970-01-01', 'date_of_death' => null, 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Author Two', 'biography' => 'Biography of Author Two', 'date_of_birth' => '1980-05-15', 'date_of_death' => '2020-08-01', 'created_at' => now(), 'updated_at' => now()],
         ]);
-
+         // Insert Wishlists
+         DB::table('wish_lists')->insert([
+            ['book_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+        ]);
         // Insert Categories
         DB::table('categories')->insert([
             ['name' => 'Fiction', 'description' => 'Fictional books', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Science', 'description' => 'Scientific books', 'created_at' => now(), 'updated_at' => now()],
         ]);
+        DB::table('wish_list_items')->insert([
+            'wish_list_id' => '1',
+            'book_id' => $bookId, // The book we just inserted
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Insert Customers
         DB::table('customers')->insert([
-            ['name' => 'John Doe', 'email' => 'john.doe@example.com', 'phone_number' => '123456789', 'address' => '123 Street', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Jane Smith', 'email' => 'jane.smith@example.com', 'phone_number' => '987654321', 'address' => '456 Avenue', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'John Doe', 'email' => 'john.doe@example.com', 'phone_number' => '123456789', 'address' => '123 Street','is_member'=>'1','wish_list_id'=>'1', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Insert Members (Make sure customer_id exists in the customers table)
@@ -39,7 +47,7 @@ class DatabaseSeeder extends Seeder
 
         // Insert Books to Rent
         DB::table('book_to_rents')->insert([
-            ['title' => 'Rental Book One', 'description' => 'A rental book', 'rental_price_per_day' => 2.50, 'available_quantity' => 5, 'cover_image' => null, 'author_id' => 1, 'category_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['title' => 'Rental Book One', 'description' => 'A rental book', 'cover_image' => null,'rental_price_per_day' => 2.50, 'available_quantity' => 5,  'author_id' => 1, 'category_id' => 2, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Insert Orders
@@ -57,10 +65,7 @@ class DatabaseSeeder extends Seeder
             ['order_id' => 1, 'transaction_date' => now(), 'payment_method' => 'card', 'status' => 'successful', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        // Insert Wishlists
-        DB::table('wishlists')->insert([
-            ['customer_id' => 1, 'book_id' => 1, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+       
 
         // Insert Track Active Rental Books
         DB::table('track_active_rental_books')->insert([
