@@ -13,6 +13,7 @@ use App\Http\Controllers\BookToSellController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TrackBookPurchaseController;
 use App\Http\Controllers\TrackActiveRentalBookController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,3 +75,13 @@ Route::get('/purchasesBooks/{id}', [TrackBookPurchaseController::class, 'show'])
 Route::get('/members', [MemberController::class,'index']);
 Route::get('/members/{id}', [MemberController::class, 'show']);
 Route::post('/members', [MemberController::class, 'store']);
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});

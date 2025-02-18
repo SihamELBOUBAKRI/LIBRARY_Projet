@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('wish_list_items', function (Blueprint $table) {
-            $table->id(); // Primary Key
-            $table->foreignId('wish_list_id')->constrained('wish_lists')->onDelete('cascade'); // Many-to-One with wish lists
-            $table->foreignId('book_id')->constrained('book_to_sells')->onDelete('cascade'); // Many-to-One with books
+        Schema::create('book_purchases', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wish_list_items');
+        Schema::dropIfExists('book_purchases');
     }
 };

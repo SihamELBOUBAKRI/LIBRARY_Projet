@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('biography')->nullable();
-            $table->date('date_of_birth');
-            $table->date('date_of_death')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 8, 2); // Transaction amount
+            $table->enum('type', ['rental', 'purchase']); // Rental or Purchase
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('transactions');
     }
 };

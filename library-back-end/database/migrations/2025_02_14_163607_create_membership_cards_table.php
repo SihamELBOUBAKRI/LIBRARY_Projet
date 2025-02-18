@@ -11,16 +11,18 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+        public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('membership_cards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->enum('status', ['active', 'checked_out', 'abandoned'])->default('active');
-            $table->integer('total_quantity')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('card_number')->unique();
+            $table->date('issued_on');
+            $table->date('valid_until');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('membership_cards');
     }
 };

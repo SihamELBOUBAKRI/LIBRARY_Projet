@@ -11,15 +11,18 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+        public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->string('title');
+            $table->string('author');
+            $table->integer('stock')->default(0); // Stock for sales
+            $table->decimal('price', 8, 2)->nullable(); // If null, the book is rental-only
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('books');
     }
 };

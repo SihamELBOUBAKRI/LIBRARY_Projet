@@ -11,16 +11,15 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+        public function up()
     {
-        Schema::create('order_book', function (Blueprint $table) {
+        Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('book_id')->constrained('book_to_sells')->onDelete('cascade');
+            $table->string('name');
             $table->timestamps();
         });
     }
-    
+
 
     /**
      * Reverse the migrations.
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_book');
+        Schema::dropIfExists('authors');
     }
 };

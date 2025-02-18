@@ -13,22 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('active_rentals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->decimal('total_price', 10, 2);
-            $table->enum('status', ['pending', 'completed', 'canceled']);
             $table->timestamps();
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('active_rentals');
     }
 };

@@ -12,13 +12,14 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('wish_lists', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('book_id')->constrained('book_to_sells')->onDelete('cascade');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('wish_lists', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

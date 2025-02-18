@@ -11,17 +11,20 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+        public function up()
     {
-        Schema::create('track_book_purchases', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->foreignId('book_id')->constrained('book_to_sells')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('total_price', 8, 2);
+            $table->enum('status', ['Pending', 'Paid', 'Shipped', 'Cancelled'])->default('Pending');
             $table->timestamps();
         });
     }
+
+
     /**
      * Reverse the migrations.
      *
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('track_book_purchases');
+        Schema::dropIfExists('orders');
     }
 };
