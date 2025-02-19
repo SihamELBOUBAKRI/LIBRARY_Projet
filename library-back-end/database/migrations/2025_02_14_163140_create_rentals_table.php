@@ -11,18 +11,21 @@ return new class extends Migration
      *
      * @return void
      */
-        public function up()
+    public function up()
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->date('due_date'); // Return deadline
-            $table->boolean('is_approved')->default(false);
-            $table->decimal('penalty', 8, 2)->default(0);
+            $table->unsignedBigInteger('book_id'); // Ensure this matches books.id
+            $table->unsignedBigInteger('user_id');
+            $table->date('rental_date');
+            $table->date('return_date')->nullable();
             $table->timestamps();
+    
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
+    
 
 
     /**

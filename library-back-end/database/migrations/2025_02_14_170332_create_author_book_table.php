@@ -12,14 +12,18 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('author_book', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('author_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('author_book', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('author_id'); // Must match authors.id
+        $table->unsignedBigInteger('book_id');   // Must match books.id
+        $table->timestamps();
+
+        $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
+        $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+    });
+}
+
     
 
     /**
