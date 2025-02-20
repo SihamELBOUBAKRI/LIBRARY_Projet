@@ -8,19 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wishlist extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['customer_id', 'book_id'];
-
-    
-    public function customer()
+    // Relationships
+    public function user()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class);
     }
 
-        public function items()
+    public function books()
     {
-        return $this->hasMany(WishListItem::class);
+        return $this->belongsToMany(BookToSell::class, 'wishlist_book', 'wishlist_id', 'book_id');
     }
-
 }

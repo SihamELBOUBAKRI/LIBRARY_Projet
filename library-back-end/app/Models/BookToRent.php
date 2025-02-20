@@ -8,18 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookToRent extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['title', 'description', 'rental_price_per_day', 'available_quantity', 'author_id', 'category_id'];
+    // Relationships
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function author()
     {
         return $this->belongsTo(Author::class);
     }
 
-    public function category()
+    public function rentals()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Rental::class);
+    }
+
+    public function activeRentals()
+    {
+        return $this->hasMany(ActiveRental::class);
     }
 }
-
