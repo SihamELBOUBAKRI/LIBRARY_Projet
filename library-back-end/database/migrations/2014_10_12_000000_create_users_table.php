@@ -11,6 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
+
         public function up()
         {
             Schema::create('users', function (Blueprint $table) {
@@ -18,19 +19,13 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('email')->unique();
                 $table->string('password');
-                $table->enum('role', ['admin', 'member'])->default('member'); // Admin or Member
-                $table->date('membership_expires')->nullable(); // Membership expiry date
+                $table->enum('role', ['admin', 'customer'])->default('customer');
                 $table->timestamps();
             });
         }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('users');
-    }
-};
+    
+        public function down()
+        {
+            Schema::dropIfExists('users');
+        }
+    };

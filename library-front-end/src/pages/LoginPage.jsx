@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../features/auth/authSlice';
+import axios from 'axios';  // Import axios for API requests
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -14,25 +15,24 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      let user;
-      if (email === 'admin@example.com' && password === 'admin123') {
-        user = { id: 1, name: 'Admin User', role: 'admin', email };
-      } else if (email === 'customer@example.com' && password === 'customer123') {
-        user = { id: 2, name: 'Customer User', role: 'customer', email };
+      // Make the API request to check if the user exists
+      const response = await axios.post('http://your-backend-api-url/login', { email, password });
+
+      if (response.data && response.data.user) {
+        const user = response.data.user;
+        dispatch(login(user)); // Dispatch the user to the Redux store
+
+        // Redirect based on the user role
+        if (user.role === 'admin') {
+          navigate('/dashboard');
+        } else if (user.role === 'customer') {
+          navigate('/customer-dashboard');
+        }
       } else {
         throw new Error('Invalid credentials');
       }
-      dispatch(login(user));
-      // Redirect based on user role
-      if (user.role === 'admin') {
-        navigate('/dashboard');
-      } else {
-        navigate('/profile');
-      }
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || 'An error occurred');
     }
   };
 

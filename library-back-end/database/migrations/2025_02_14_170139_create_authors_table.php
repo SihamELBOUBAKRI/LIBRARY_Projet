@@ -7,15 +7,16 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('authors', function (Blueprint $table) {
-            $table->id(); // This creates BIGINT UNSIGNED by default
+            $table->id();
             $table->string('name');
             $table->text('bio')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
-    
 
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('authors');
     }
 };

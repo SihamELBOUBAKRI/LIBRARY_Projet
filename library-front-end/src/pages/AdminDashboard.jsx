@@ -1,174 +1,75 @@
-// src/pages/DashboardPage.jsx
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../features/users/usersSlice';
-import { fetchOrders } from '../features/orders/ordersSlice';
-import { fetchBooks, addBook, deleteBook } from '../features/books/bookSlice';
-import { Container, Row, Col, Table, Button, Form, Modal, Spinner, Alert } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AdminDashboard = () => {
-  const dispatch = useDispatch();
-  const { users, loading: usersLoading } = useSelector(state => state.users);
-  const { orders, loading: ordersLoading } = useSelector(state => state.orders);
-  const { books, loading: booksLoading } = useSelector(state => state.books);
-
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newBook, setNewBook] = useState({ title: '', author: '', category: '', price: '', stock: '' });
+  const [purchases, setPurchases] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [wishlists, setWishlists] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchUsers());
-    dispatch(fetchOrders());
-    dispatch(fetchBooks());
-  }, [dispatch]);
+    axios.get('/api/track-book-purchases').then(response => setPurchases(response.data));
+    axios.get('/api/transactions').then(response => setTransactions(response.data));
+    axios.get('/api/wishlists').then(response => setWishlists(response.data));
+  }, []);
 
-  const handleAddBook = () => {
-    dispatch(addBook(newBook));
-    setShowAddModal(false);
-    setNewBook({ title: '', author: '', category: '', price: '', stock: '' });
+  const deletePurchase = (id) => {
+    axios.delete(`/api/track-book-purchases/${id}`).then(() => {
+      setPurchases(purchases.filter(purchase => purchase.id !== id));
+    });
   };
 
-  const handleDeleteBook = (id) => {
-    dispatch(deleteBook(id));
+  const deleteTransaction = (id) => {
+    axios.delete(`/api/transactions/${id}`).then(() => {
+      setTransactions(transactions.filter(transaction => transaction.id !== id));
+    });
+  };
+
+  const deleteWishlist = (id) => {
+    axios.delete(`/api/wishlists/${id}`).then(() => {
+      setWishlists(wishlists.filter(wishlist => wishlist.id !== id));
+    });
   };
 
   return (
-    <Container className="my-4">
-      <h2 className="mb-4">📊 Library Dashboard</h2>
-      
-      {/* Manage Books Section */}
-      <Row>
-        <Col>
-          <h4>📚 Manage Books</h4>
-          <Button variant="primary" onClick={() => setShowAddModal(true)}>➕ Add Book</Button>
-          {booksLoading ? <Spinner animation="border" className="mx-2" /> : (
-            <Table striped bordered hover className="mt-3">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {books.map((book, index) => (
-                  <tr key={book.id}>
-                    <td>{index + 1}</td>
-                    <td>{book.title}</td>
-                    <td>{book.author}</td>
-                    <td>{book.category}</td>
-                    <td>${book.price}</td>
-                    <td>{book.stock}</td>
-                    <td>
-                      <Button variant="danger" size="sm" onClick={() => handleDeleteBook(book.id)}>🗑 Delete</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Col>
-      </Row>
+    <div>
+      <h2>Admin Dashboard</h2>
+      <div>
+        <h3>Purchases</h3>
+        <ul>
+          {purchases.map(purchase => (
+            <li key={purchase.id}>
+              {purchase.book_name} 
+              <button onClick={() => deletePurchase(purchase.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      {/* View Users Section */}
-      <Row className="mt-5">
-        <Col>
-          <h4>👥 All Users</h4>
-          {usersLoading ? <Spinner animation="border" /> : (
-            <Table striped bordered hover className="mt-3">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, index) => (
-                  <tr key={user.id}>
-                    <td>{index + 1}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Col>
-      </Row>
+      <div>
+        <h3>Transactions</h3>
+        <ul>
+          {transactions.map(transaction => (
+            <li key={transaction.id}>
+              {transaction.amount} 
+              <button onClick={() => deleteTransaction(transaction.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      {/* View Orders Section */}
-      <Row className="mt-5">
-        <Col>
-          <h4>🛒 Orders</h4>
-          {ordersLoading ? <Spinner animation="border" /> : (
-            <Table striped bordered hover className="mt-3">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Customer</th>
-                  <th>Books</th>
-                  <th>Total Price</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order, index) => (
-                  <tr key={order.id}>
-                    <td>{index + 1}</td>
-                    <td>{order.customer_name}</td>
-                    <td>{order.books.map(b => b.title).join(', ')}</td>
-                    <td>${order.total_price}</td>
-                    <td>{order.status}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Col>
-      </Row>
-
-      {/* Add Book Modal */}
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Book</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-2">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" value={newBook.title} onChange={e => setNewBook({ ...newBook, title: e.target.value })} />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Author</Form.Label>
-              <Form.Control type="text" value={newBook.author} onChange={e => setNewBook({ ...newBook, author: e.target.value })} />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Category</Form.Label>
-              <Form.Control type="text" value={newBook.category} onChange={e => setNewBook({ ...newBook, category: e.target.value })} />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Price</Form.Label>
-              <Form.Control type="number" value={newBook.price} onChange={e => setNewBook({ ...newBook, price: e.target.value })} />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label>Stock</Form.Label>
-              <Form.Control type="number" value={newBook.stock} onChange={e => setNewBook({ ...newBook, stock: e.target.value })} />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>Close</Button>
-          <Button variant="primary" onClick={handleAddBook}>Add Book</Button>
-        </Modal.Footer>
-      </Modal>
-
-    </Container>
+      <div>
+        <h3>Wishlists</h3>
+        <ul>
+          {wishlists.map(wishlist => (
+            <li key={wishlist.id}>
+              {wishlist.book_name} 
+              <button onClick={() => deleteWishlist(wishlist.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
+
 export default AdminDashboard;

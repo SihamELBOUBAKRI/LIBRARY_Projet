@@ -5,7 +5,6 @@ import CategoriesSidebar from '../components/CategoriesSidebar';
 const HomePage = () => {
   return (
     <div>
-      
       <CategoriesSidebar/>
       <BookList />
     </div>

@@ -11,11 +11,11 @@ return new class extends Migration
      *
      * @return void
      */
-        public function up()
+    public function up()
     {
-        Schema::create('membership_cards', function (Blueprint $table) {
+        Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
             $table->string('card_number')->unique();
             $table->date('issued_on');
             $table->date('valid_until');
@@ -23,14 +23,8 @@ return new class extends Migration
         });
     }
 
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('membership_cards');
+        Schema::dropIfExists('memberships');
     }
 };
