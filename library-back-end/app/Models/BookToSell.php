@@ -8,28 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookToSell extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['title', 'description', 'price', 'stock_quantity', 'author_id', 'category_id'];
+    // Relationships
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function author()
     {
         return $this->belongsTo(Author::class);
     }
 
-    public function category()
+    public function wishlists()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Wishlist::class, 'wishlist_book', 'book_id', 'wishlist_id');
     }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_book', 'book_id', 'cart_id')->withPivot('quantity');
+    }
+
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_book')
-                    ->withTimestamps();
+        return $this->belongsToMany(Order::class, 'order_book', 'book_id', 'order_id')->withPivot('quantity');
     }
-    public function wishListItems()
-    {
-        return $this->hasMany(WishListItem::class);
-    }
-
-
 }

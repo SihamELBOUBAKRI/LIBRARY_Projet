@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::create('wish_lists', function (Blueprint $table) {
+    Schema::create('wishlists', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-        $table->timestamps();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Reference to the user
+        $table->foreignId('book_id')->constrained('book_to_sell')->onDelete('cascade'); // Reference to the book
+        $table->timestamps(); // To track when the book was added to the wishlist
+    
+        // Ensure a user can't add the same book to their wishlist multiple times
+        $table->unique(['user_id', 'book_id']);
     });
 }
 

@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('wish_list_items', function (Blueprint $table) {
+        Schema::create('overdues', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wish_list_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade');
+            $table->foreignId('rental_id')->constrained('rentals')->onDelete('cascade');
+            $table->decimal('penalty_amount', 8, 2); // Penalty amount for overdue books
+            $table->date('due_date'); // Date when the penalty was applied
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wish_list_items');
+        Schema::dropIfExists('overdues');
     }
 };

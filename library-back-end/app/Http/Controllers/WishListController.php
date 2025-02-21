@@ -1,91 +1,60 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\WishList;
+use App\Models\Wishlist;
+use App\Models\BookToSell;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
-class WishListController extends Controller
+class WishlistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Get all wishlists
     public function index()
     {
-        $WishList=WishList::all();
-        return response()->json($WishList);
+        return Wishlist::all();
     }
 
+    // Get a specific wishlist
     public function show($id)
     {
-        // Fetch the author by ID
-        $WishList = WishList::find($id);
-
-        // Check if the author exists
-        if ($WishList) {
-            return response()->json($WishList);
-        } else {
-            return response()->json(['message' => 'WishList not found'], 404);
-        }
+        return Wishlist::findOrFail($id);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Create a new wishlist
     public function store(Request $request)
     {
-        //
+        return Wishlist::create($request->all());
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Update a wishlist
     public function update(Request $request, $id)
     {
-        //
+        $wishlist = Wishlist::findOrFail($id);
+        $wishlist->update($request->all());
+        return $wishlist;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Delete a wishlist
     public function destroy($id)
     {
-        //
+        Wishlist::destroy($id);
+        return response()->noContent();
+    }
+
+    // Add a book to a wishlist
+    public function addBook(Request $request, $wishlistId, $bookId)
+    {
+        $wishlist = Wishlist::findOrFail($wishlistId);
+        $book = BookToSell::findOrFail($bookId);
+        $wishlist->books()->attach($book);
+        return response()->json(['message' => 'Book added to wishlist']);
+    }
+
+    // Remove a book from a wishlist
+    public function removeBook(Request $request, $wishlistId, $bookId)
+    {
+        $wishlist = Wishlist::findOrFail($wishlistId);
+        $book = BookToSell::findOrFail($bookId);
+        $wishlist->books()->detach($book);
+        return response()->json(['message' => 'Book removed from wishlist']);
     }
 }
-

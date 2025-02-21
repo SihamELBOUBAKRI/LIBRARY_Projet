@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('active_rentals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('rental_id')->constrained('rentals')->onDelete('cascade');
+            $table->enum('status', ['pending', 'overdue', 'returned'])->default('pending'); // Enum for status
             $table->timestamps();
         });
     }

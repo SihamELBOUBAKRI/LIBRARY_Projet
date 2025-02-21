@@ -1,12 +1,11 @@
 <?php
 
-// app/Models/Order.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Rental extends Model
 {
     // Relationships
     public function user()
@@ -14,8 +13,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function books()
+    public function bookToRent()
     {
-        return $this->belongsToMany(BookToSell::class, 'order_book', 'order_id', 'book_id')->withPivot('quantity');
+        return $this->belongsTo(BookToRent::class);
     }
 }
