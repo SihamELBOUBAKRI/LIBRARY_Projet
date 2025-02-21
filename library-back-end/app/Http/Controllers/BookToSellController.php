@@ -20,9 +20,22 @@ class BookToSellController extends Controller
 
     // Create a new book available for sale
     public function store(Request $request)
-    {
-        return BookToSell::create($request->all());
-    }
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'author_id' => 'required|exists:authors,id',
+        'category_id' => 'required|exists:categories,id',
+        'description' => 'nullable|string',
+        'published_year' => 'nullable|integer|min:1000|max:' . date('Y'),
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'image' => 'nullable|string|max:255',
+    ]);
+
+    $book = BookToSell::create($validatedData);
+
+    return response()->json(['message' => 'Book added for sale successfully', 'book' => $book], 201);
+}
 
     // Update a book available for sale
     public function update(Request $request, $id)

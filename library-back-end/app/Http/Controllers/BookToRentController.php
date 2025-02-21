@@ -20,10 +20,22 @@ class BookToRentController extends Controller
 
     // Create a new book available for rent
     public function store(Request $request)
-    {
-        return BookToRent::create($request->all());
-    }
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'author_id' => 'required|exists:authors,id',
+        'category_id' => 'required|exists:categories,id',
+        'description' => 'nullable|string',
+        'published_year' => 'nullable|integer|min:1000|max:' . date('Y'),
+        'rental_price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'image' => 'nullable|string|max:255',
+    ]);
 
+    $book = BookToRent::create($validatedData);
+
+    return response()->json(['message' => 'Book added for rent successfully', 'book' => $book], 201);
+}
     // Update a book available for rent
     public function update(Request $request, $id)
     {

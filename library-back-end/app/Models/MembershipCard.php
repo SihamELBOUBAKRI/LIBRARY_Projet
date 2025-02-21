@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class MembershipCard extends Model
 {
     // Relationships
+    use HasFactory;
 
+    protected $fillable = [
+        'user_id', 'card_number', 'issued_on', 'valid_until'
+    ];
     /**
      * A membership card belongs to a user.
      */

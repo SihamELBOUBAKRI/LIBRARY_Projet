@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookToRent extends Model
 {
+
+    use HasFactory; // Add this
+
+    protected $table = 'book_to_rent'; // Ensure table name is correct
+
+    protected $fillable = [
+        'title', 'author_id', 'category_id', 'description',
+        'published_year', 'rental_price', 'stock', 'image'
+    ];
+
+    
     // Relationships
     public function category()
     {

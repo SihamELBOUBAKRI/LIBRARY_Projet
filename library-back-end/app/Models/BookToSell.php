@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookToSell extends Model
 {
+
+    use HasFactory; // Ensure this is included
+
+    protected $table = 'book_to_sell'; // Specify the table name if needed
+
+    // Specify which attributes can be mass-assigned
+    protected $fillable = [
+        'title', 'author_id', 'category_id', 'description',
+        'published_year', 'price', 'stock', 'image'
+    ];
+    
     // Relationships
     public function category()
     {

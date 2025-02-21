@@ -20,6 +20,11 @@ return new class extends Migration
                 $table->string('email')->unique();
                 $table->string('password');
                 $table->enum('role', ['admin', 'customer'])->default('customer');
+                $table->string('address')->nullable(); 
+                $table->string('tele')->nullable(); 
+                $table->string('cin')->unique(); 
+                $table->integer('birthyear')->nullable();
+                $table->boolean('isamember')->default(false);
                 $table->timestamps();
             });
         }

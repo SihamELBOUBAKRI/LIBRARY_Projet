@@ -8,10 +8,11 @@ class ActiveRentalController extends Controller
 {
     // Get all active rentals
     public function index()
-    {
-        return ActiveRental::all();
-    }
-
+{
+    $activeRentals = ActiveRental::all();
+    \Log::info('Active Rentals: ', $activeRentals->toArray()); // Log the active rentals to the log file
+    return response()->json($activeRentals, 200);
+}
     // Get a specific active rental
     public function show($id)
     {

@@ -21,7 +21,15 @@ class AuthorController extends Controller
     // Create a new author
     public function store(Request $request)
     {
-        return Author::create($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'image' => 'nullable|string|max:255',
+        ]);
+
+        $author = Author::create($validatedData);
+
+        return response()->json(['message' => 'Author added successfully', 'author' => $author], 201);
     }
 
     // Update an author
