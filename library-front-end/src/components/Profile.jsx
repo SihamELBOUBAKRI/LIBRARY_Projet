@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import BookList from './BookList';
+import BookList from '../pages/BookListPage';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
