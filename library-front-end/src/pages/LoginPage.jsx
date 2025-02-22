@@ -1,7 +1,7 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-import axiosInstance from '../axios'; // Import the Axios instance
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../components/config/axiosSetup';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
