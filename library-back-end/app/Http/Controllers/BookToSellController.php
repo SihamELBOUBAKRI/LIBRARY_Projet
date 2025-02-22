@@ -8,9 +8,14 @@ class BookToSellController extends Controller
 {
     // Get all books available for sale
     public function index()
-    {
-        return BookToSell::all();
+{
+    try {
+        $books = BookToSell::all(); // Make sure this model exists and is set up correctly
+        return response()->json($books);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
 
     // Get a specific book available for sale
     public function show($id)

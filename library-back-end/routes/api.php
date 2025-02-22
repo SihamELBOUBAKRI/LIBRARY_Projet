@@ -27,7 +27,8 @@ Route::apiResource('authors', AuthorController::class);
 Route::apiResource('book-to-rent', BookToRentController::class);
 
 // Book to Sell Routes
-Route::apiResource('book-to-sell', BookToSellController::class);
+// Route::apiResource('book-to-sell', BookToSellController::class);
+Route::get('/book-to-sell', [BookToSellController::class, 'index']);
 
 // Rental Routes
 Route::apiResource('rentals', RentalController::class);
