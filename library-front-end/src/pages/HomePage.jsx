@@ -1,6 +1,6 @@
 import React from 'react';
-import BookList from './BookList';
 import CategoriesSidebar from '../components/CategoriesSidebar';
+import BookList from '../components/BookList';
 
 const HomePage = () => {
   return (

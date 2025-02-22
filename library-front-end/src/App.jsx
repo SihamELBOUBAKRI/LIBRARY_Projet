@@ -4,12 +4,12 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
-import WishlistPage from './pages/WishlistPage';
-import BookList from './pages/BookList';  // Now importing from pages folder
-import AuthorsList from './pages/AuthorsList';
 import Navbar from './components/Navbar';
+import Profile from './components/Profile';
+import BookList from './components/BookList';
+import AuthorsList from './components/AuthorsList';
+import Wishlist from './components/Wishlist';
 
 function App() {
   return (
@@ -19,9 +19,9 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/books" element={<BookList />} />
         <Route path="/authors" element={<AuthorsList />} />
       </Routes>
