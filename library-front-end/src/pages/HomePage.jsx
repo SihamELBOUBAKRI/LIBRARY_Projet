@@ -1,14 +1,15 @@
+// src/pages/HomePage.jsx
 import React from 'react';
-import BookList from './BookList';
-import CategoriesSidebar from '../components/CategoriesSidebar';
+import UserList from '../components/UserList'; // Import the UserList component
 
 const HomePage = () => {
   return (
     <div>
-      <CategoriesSidebar/>
-      <BookList />
+      <h2>Welcome to the HomePage!</h2>
+      <UserList /> {/* Display the user list here */}
     </div>
   );
 };
 
 export default HomePage;
+

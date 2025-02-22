@@ -1,4 +1,3 @@
-// src/pages/SignUpPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,28 +6,41 @@ const SignUpPage = () => {
 
   // Form state
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName]   = useState('');
-  const [email, setEmail]         = useState('');
-  const [password, setPassword]   = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // For handling messages
-  const [error, setError]     = useState('');
+  // For handling messages and loading state
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true);
 
-    // Basic validation: Check if passwords match
+    // Basic validation
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      setLoading(false);
       return;
     }
 
     try {
-      // Replace with your actual API endpoint for signup
       const response = await fetch('https://api.example.com/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,26 +49,31 @@ const SignUpPage = () => {
           lastName,
           email,
           password,
-          role: 'customer' // Creating a customer account
+          role: 'customer'
         }),
       });
 
       if (!response.ok) {
-        // Try to extract error message from response
         const errorData = await response.json();
         throw new Error(errorData.message || 'Signup failed');
       }
 
       const data = await response.json();
-      setSuccess('Signup successful! Redirecting to login...');
+      setSuccess(data.message || 'Signup successful! Redirecting to login...');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
       
-      // Redirect to login page after a brief delay
       setTimeout(() => {
         navigate('/login');
       }, 1500);
       
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,7 +133,9 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Sign Up</button>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Signing Up...' : 'Sign Up'}
+        </button>
       </form>
     </div>
   );

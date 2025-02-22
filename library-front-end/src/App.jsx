@@ -4,11 +4,12 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import ProfilePage from './pages/ProfilePage';
+import ProfilePage from './components/Profile';
 import AdminDashboard from './pages/AdminDashboard';
-import WishlistPage from './pages/WishlistPage';
-import BookList from './pages/BookList';  // Now importing from pages folder
-import AuthorsList from './pages/AuthorsList';
+import WishlistPage from './components/Wishlist';
+import BookList from './pages/BookListPage';
+import AuthorsList from './pages/AuthorsListPage';
+
 import Navbar from './components/Navbar';
 
 function App() {

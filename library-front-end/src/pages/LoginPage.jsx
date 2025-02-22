@@ -1,67 +1,54 @@
+// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import axiosInstance from '../axios'; // Import the Axios instance
 import { useNavigate } from 'react-router-dom';
-import { login } from '../features/auth/authSlice';
-import axios from 'axios';  // Import axios for API requests
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     try {
-      // Make the API request to check if the user exists
-      const response = await axios.post('http://your-backend-api-url/login', { email, password });
+      const response = await axiosInstance.post('/login', {
+        email,
+        password,
+      });
 
-      if (response.data && response.data.user) {
-        const user = response.data.user;
-        dispatch(login(user)); // Dispatch the user to the Redux store
+      // Store the token in localStorage
+      localStorage.setItem('token', response.data.token);
 
-        // Redirect based on the user role
-        if (user.role === 'admin') {
-          navigate('/dashboard');
-        } else if (user.role === 'customer') {
-          navigate('/customer-dashboard');
-        }
-      } else {
-        throw new Error('Invalid credentials');
-      }
+      // Redirect to the home page or dashboard
+      navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'An error occurred');
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
   return (
-    <div className="container my-4">
+    <div>
       <h2>Login</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Email:</label>
-          <input 
-            type="email" 
-            className="form-control" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-        </div>
-        <div className="mb-3">
-          <label>Password:</label>
-          <input 
-            type="password" 
-            className="form-control" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Login</button>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
       </form>
     </div>
   );
